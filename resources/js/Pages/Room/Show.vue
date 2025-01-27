@@ -5,7 +5,13 @@ import Header from '@/Components/Chat/Header.vue';
 import Nev from '@/Components/Chat/Nev.vue';
 import { useMessagesStore } from '@/Store/useMessagesStore';
 
+const props = defineProps({
+    room: Object,
+    required: true
+});
+
 const messageStore = useMessagesStore();
+messageStore.fetchMessages(props.room.slug);
 </script>
 
 <template>
@@ -23,6 +29,7 @@ const messageStore = useMessagesStore();
             <!-- END Page Header -->
 
             <!-- Page Content -->
+            <!-- {{ messageStore.allMessages }} -->
             <Messages />
             
             <!-- END Page Content -->

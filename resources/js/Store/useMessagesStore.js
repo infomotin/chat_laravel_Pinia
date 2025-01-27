@@ -10,7 +10,10 @@ export const useMessagesStore = defineStore('messages', {
     actions: {
       fetchMessages(roomSlug,page=1) {
         // fetch messages from the server
-        axios
+        axios.get(`/rooms/${roomSlug}/messages?page=${page}`).then(response => {
+          this.messages = [...this.messages, ...response.data.data];
+          this.page = response.data.meta.current_page;
+        })
       }
     },
     getters: {

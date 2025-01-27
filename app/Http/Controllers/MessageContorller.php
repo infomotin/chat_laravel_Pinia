@@ -12,7 +12,7 @@ class MessageContorller extends Controller
     public function index(Room $room, Request $request)
     {
         $messages = $room->messages()->with('user')->latest()->paginate(100);
-
+        // dd($messages);
         return MessageResource::collection($messages);
     }
 }
