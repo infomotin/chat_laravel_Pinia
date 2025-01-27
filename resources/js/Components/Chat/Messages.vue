@@ -9,7 +9,8 @@ const messageStore = useMessagesStore();
     <main id="page-content" class="absolute inset-0">
 
         <div
-            class="container mx-auto space-y-6 px-4 py-24 lg:p-8 lg:pb-28 xl:max-w-7xl flex flex-col h-full overflow-y-auto">
+            class="container mx-auto space-y-6 px-4 py-24 lg:p-8 lg:pb-28 xl:max-w-7xl 
+            flex flex-col h-full overflow-y-auto">
             <!-- Messages Received -->
 
             <div v-for="message in messageStore.allMessages" :key="message.id"
@@ -18,30 +19,31 @@ const messageStore = useMessagesStore();
                 <p v-if="message.user.id != $page.props.auth.user.id" class="text-sm font-medium text-slate-500">
                     {{ message.user.name }}
                 </p>
-                <div class="rounded-2xl px-5 py-3 rounded-br-none bg-gray-100">
-                    <p class="font-semibold text-slate-600">
+                <div class="rounded-2xl px-5 py-3  bg-gray-100"
+                :class="{
+                    'bg-indigo-600 text-white rounded-br-none': message.user.id == $page.props.auth.user.id,
+                    'bg-gray-100 rounded-tl-none': message.user.id != $page.props.auth.user.id
+                }"
+                >
+                    <p class="font-semibold"
+                    :class="{
+                    'text-white': message.user.id == $page.props.auth.user.id,
+                    'text-slate-500': message.user.id != $page.props.auth.user.id,
+                    
+                }">
                         {{ message.content }}
                     </p>
                 </div>
-                <p class="text-xs font-medium text-slate-500">
+                <p class="text-xs font-medium" :class="{
+                    // 'text-white': message.user.id == $page.props.auth.user.id,
+                    'text-slate-500': message.user.id != $page.props.auth.user.id,
+                }">
                     {{ message.created_at }}
                 </p>
             </div>
             <!-- END  Messages Received -->
 
-            <!-- Messages Sent -->
-            <div class="flex w-5/6 flex-col gap-2 lg:w-2/3 xl:w-1/3 items-end ms-auto">
-                <div class="rounded-2xl px-5 py-3 rounded-tl-none bg-indigo-600">
-                    <p class="font-semibold text-white">
-                        Message Content
-                    </p>
-                </div>
-                <p class="text-xs font-medium text-slate-500 text-right">
-                    16:25 am
-                </p>
-            </div>
-
-            <!-- END Messages Sent -->
+           
         </div>
     </main>
 </template>
