@@ -28,10 +28,12 @@ export const useMessagesStore = defineStore('messages', {
           'X-Socket-ID': window.Echo.socketId(),
         }
       }).then(response => {
-        this.messages = [response.data, ...this.messages];
+        this.pushMessage(response.data);
+        // this.messages = [response.data, ...this.messages];
       });
     },
     pushMessage(message) {
+      this.messages.pop();
       this.messages = [message, ...this.messages];
     },
   },
