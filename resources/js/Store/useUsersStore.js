@@ -10,6 +10,15 @@ export const useUsersStore = defineStore('users', {
     setUsers(users) {
       this.users = users;
       },
+    addUser(user) {
+      this.users = [user, ...this.users];
+    },
+    removeUser(id) {
+      this.users = this.users.filter(user => user.id !== id);
+    },
+    updateUser(id, user) {
+      this.users = this.users.map(u => u.id === id ? { ...u, ...user } : u);
+    },
     
   },
 

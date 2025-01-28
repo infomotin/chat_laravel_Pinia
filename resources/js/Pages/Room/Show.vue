@@ -36,9 +36,9 @@ channel.listen('MessageCreated', (e) => {
     userStore.setUsers(users);
 
 }).joining((user) => {
-    console.log(user);
+    userStore.addUser(user);
 }).leaving((user) => {
-    console.log(user);
+    userStore.removeUser(user.id);
 }).listenForWhisper('typing', (e) => {
     console.log(e);
 }).error((error) => {
