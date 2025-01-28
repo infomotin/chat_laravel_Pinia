@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/rooms/{room:slug}', [RoomContorller::class, 'show'])->name('rooms.show');
     Route::get('/rooms/{room:slug}/messages', [MessageContorller::class, 'index'])->name('messages.index');
+    Route::post('/rooms/{room:slug}/messages', [MessageContorller::class, 'store'])->name('messages.store');
 });
 
 require __DIR__.'/auth.php';

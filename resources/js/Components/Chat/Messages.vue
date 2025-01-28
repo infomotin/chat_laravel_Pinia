@@ -17,7 +17,7 @@ const { stop } = useIntersectionObserver(
   ([{ isIntersecting }], observerElement) => {
   
     if(isIntersecting && messageStore.getIsLoaded) {
-       
+       console.log('fetching previous messages');
         messageStore.fetchPreviousMessages(props.room.slug);
         // messageStore.fetchMessages(props.room.slug)
     } 
@@ -59,7 +59,7 @@ const { stop } = useIntersectionObserver(
                 </p>
             </div>
             <!-- END  Messages Received -->
-            <div ref="target">
+            <div ref="target" class="translate-y-20">
               
             </div>
         </div>

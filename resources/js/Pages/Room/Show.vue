@@ -4,13 +4,18 @@ import Footer from '@/Components/Chat/Footer.vue';
 import Header from '@/Components/Chat/Header.vue';
 import Nev from '@/Components/Chat/Nev.vue';
 import { useMessagesStore } from '@/Store/useMessagesStore';
+import axios from 'axios';
 
 const props = defineProps({
     room: Object,
     required: true
 });
-
 const messageStore = useMessagesStore();
+const storeMessage = (payload) => {
+    console.log(payload.message);
+    messageStore.storeMessage(props.room.slug,payload);
+}
+
 messageStore.fetchMessages(props.room.slug);
 </script>
 
@@ -35,7 +40,7 @@ messageStore.fetchMessages(props.room.slug);
             <!-- END Page Content -->
 
             <!-- Page Footer -->
-            <Footer v-on:message="console.log($event)"/>   
+            <Footer v-on:message="storeMessage({content: $event})"/>   
             <!-- END Page Footer -->
         </div>
         <!-- END Page Container -->

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 
 export const useMessagesStore = defineStore('messages', {
   state: () => {
-    return { page: 1, messages: [],isLoaded: false };
+    return { page: 1, messages: [], isLoaded: false };
   },
   // could also be defined as
   // state: () => ({ count: 0 })
@@ -17,11 +17,18 @@ export const useMessagesStore = defineStore('messages', {
       });
     },
     // getters previous data
-  fetchPreviousMessages(roomSlug) {
-    this.fetchMessages(roomSlug, this.page + 1);
+    fetchPreviousMessages(roomSlug) {
+      this.fetchMessages(roomSlug, this.page + 1);
+    },
+    storeMessage(roomSlug, payload) {
+      // console.log('storeMessage', payload);
+      // store message to the server
+      axios.post(`/rooms/${roomSlug}/messages`, payload).then(response => {
+        this.messages = [response.data, ...this.messages];
+      });
+    }
   },
-  },
-  
+
   getters: {
     allMessages(state) {
       return state.messages;
