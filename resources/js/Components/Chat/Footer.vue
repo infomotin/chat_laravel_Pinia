@@ -14,6 +14,11 @@ const handelEnter = (e) => {
         message.value = '';
     }
 }
+
+const handelTyping = () => {
+    // console.log('Typing');
+    emit('typing',true);
+}
 </script>
 
 
@@ -25,6 +30,7 @@ const handelEnter = (e) => {
                 v-on:keydown.enter.prevent="handelEnter"
                 v-on:keydown.shift="shift = true"
                 v-on:keyup="shift = false"
+                v-on:keydown="handelTyping"
                 class="-mx-5 block w-full rounded-lg border-0 px-5 py-4 leading-6 focus:border-indigo-500 focus:ring focus:ring-indigo-500/75"
                 placeholder="Type a new message and hit enter.." > 
             </textarea>

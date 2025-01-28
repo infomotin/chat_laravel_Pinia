@@ -18,18 +18,18 @@ const storeMessage = (payload) => {
     messageStore.storeMessage(props.room.slug, payload);
 }
 
-const channel = window.Echo.join(`room.${props.room.id}`);
-    // .here((users) => {
-    //     console.log(users);
-    // }).joining((user) => {
-    //     console.log(user);
-    // }).leaving((user) => {
-    //     console.log(user);
-    // }).listenForWhisper('typing', (e) => {
-    //     console.log(e);
-    // }).error((error) => {
-    //     console.error(error);
-    // });
+const channel = window.Echo.join(`room.${props.room.id}`)
+    .here((users) => {
+        console.log(users);
+    }).joining((user) => {
+        console.log(user);
+    }).leaving((user) => {
+        console.log(user);
+    }).listenForWhisper('typing', (e) => {
+        console.log(e);
+    }).error((error) => {
+        console.error(error);
+    });
 channel.listen('MessageCreated', (e) => {
     messageStore.pushMessage(e);
 }).here((users) => {
@@ -70,7 +70,9 @@ messageStore.fetchMessages(props.room.slug);
             <!-- END Page Content -->
 
             <!-- Page Footer -->
-            <Footer v-on:message="storeMessage({ content: $event })" />
+            <Footer v-on:message="storeMessage({ content: $event })"
+                v-on:typing="console.log($event)"
+                 />
             <!-- END Page Footer -->
         </div>
         <!-- END Page Container -->
