@@ -30,7 +30,7 @@ messageStore.fetchMessages(props.room.slug);
 
             <!-- Page Content -->
             <!-- {{ messageStore.allMessages }} -->
-            <Messages />
+            <Messages :room="room"/>
             
             <!-- END Page Content -->
 

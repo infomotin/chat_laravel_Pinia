@@ -4,18 +4,27 @@ import { useIntersectionObserver } from '@vueuse/core'
 import { ref } from 'vue'
 
 const target = ref(null)
+const messageStore = useMessagesStore();
+
+const props = defineProps({
+    room: Object,
+    required: true
+});
+
+
 const { stop } = useIntersectionObserver(
   target,
   ([{ isIntersecting }], observerElement) => {
   
-    if(isIntersecting) {
-        console.log('Intersecting')
+    if(isIntersecting && messageStore.getIsLoaded) {
+       
+        messageStore.fetchPreviousMessages(props.room.slug);
         // messageStore.fetchMessages(props.room.slug)
     } 
   },
-)
+);
 
-const messageStore = useMessagesStore();
+
 
 </script>
 
@@ -50,7 +59,9 @@ const messageStore = useMessagesStore();
                 </p>
             </div>
             <!-- END  Messages Received -->
-            <div ref="target"></div>
+            <div ref="target">
+              
+            </div>
         </div>
 
         
