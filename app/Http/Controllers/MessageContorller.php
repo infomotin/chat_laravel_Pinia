@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageCreated;
 use App\Http\Requests\StoreMessageRequest;
 use Illuminate\Http\Request;
 use App\Models\Message;
@@ -25,6 +26,11 @@ class MessageContorller extends Controller
         $messages = $room->messages()->make($request->validated());
         $messages->user()->associate(Auth::user());
         $messages->save();
+
+
+        //broadcast message
+        broadcast(new MessageCreated($messages))->toOthers();
+        
         return MessageResource::make($messages);
     }
 }

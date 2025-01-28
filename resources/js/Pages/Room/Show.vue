@@ -4,7 +4,7 @@ import Footer from '@/Components/Chat/Footer.vue';
 import Header from '@/Components/Chat/Header.vue';
 import Nev from '@/Components/Chat/Nev.vue';
 import { useMessagesStore } from '@/Store/useMessagesStore';
-import axios from 'axios';
+
 
 const props = defineProps({
     room: Object,
@@ -16,6 +16,14 @@ const storeMessage = (payload) => {
     messageStore.storeMessage(props.room.slug,payload);
 }
 
+const channel = window.Echo.join(`room.${props.room.id}`);
+channel.listen('MessageCreated', (e) => {
+    console.log(e);
+    messageStore.pushMessage(e);
+    // messageStore.addMessage(e.message);
+});
+
+console.log(Echo.socketId());
 messageStore.fetchMessages(props.room.slug);
 </script>
 

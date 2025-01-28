@@ -16,17 +16,24 @@ export const useMessagesStore = defineStore('messages', {
         this.isLoaded = true;
       });
     },
-    // getters previous data
+    // getters previous data 
     fetchPreviousMessages(roomSlug) {
       this.fetchMessages(roomSlug, this.page + 1);
     },
     storeMessage(roomSlug, payload) {
       // console.log('storeMessage', payload);
       // store message to the server
-      axios.post(`/rooms/${roomSlug}/messages`, payload).then(response => {
+      axios.post(`/rooms/${roomSlug}/messages`, payload,{
+        headers: {
+          'X-Socket-ID': window.Echo.socketId(),
+        }
+      }).then(response => {
         this.messages = [response.data, ...this.messages];
       });
-    }
+    },
+    pushMessage(message) {
+      this.messages = [message, ...this.messages];
+    },
   },
 
   getters: {
