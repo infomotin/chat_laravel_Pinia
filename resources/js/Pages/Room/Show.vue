@@ -4,6 +4,7 @@ import Footer from '@/Components/Chat/Footer.vue';
 import Header from '@/Components/Chat/Header.vue';
 import Nev from '@/Components/Chat/Nev.vue';
 import { useMessagesStore } from '@/Store/useMessagesStore';
+import { useUsersStore } from '@/Store/useUsersStore';
 
 
 const props = defineProps({
@@ -11,16 +12,37 @@ const props = defineProps({
     required: true
 });
 const messageStore = useMessagesStore();
+const userStore = useUsersStore();
 const storeMessage = (payload) => {
     console.log(payload.message);
-    messageStore.storeMessage(props.room.slug,payload);
+    messageStore.storeMessage(props.room.slug, payload);
 }
 
 const channel = window.Echo.join(`room.${props.room.id}`);
+    // .here((users) => {
+    //     console.log(users);
+    // }).joining((user) => {
+    //     console.log(user);
+    // }).leaving((user) => {
+    //     console.log(user);
+    // }).listenForWhisper('typing', (e) => {
+    //     console.log(e);
+    // }).error((error) => {
+    //     console.error(error);
+    // });
 channel.listen('MessageCreated', (e) => {
-    console.log(e);
     messageStore.pushMessage(e);
-    // messageStore.addMessage(e.message);
+}).here((users) => {
+    userStore.setUsers(users);
+
+}).joining((user) => {
+    console.log(user);
+}).leaving((user) => {
+    console.log(user);
+}).listenForWhisper('typing', (e) => {
+    console.log(e);
+}).error((error) => {
+    console.error(error);
 });
 
 console.log(Echo.socketId());
@@ -29,7 +51,7 @@ messageStore.fetchMessages(props.room.slug);
 
 <template>
 
-    <head title="Messages"/>
+    <head title="Messages" />
     <div>
         <!-- Page Container -->
         <div id="page-container" class="relative mx-auto h-screen min-w-[320px] bg-white lg:ms-80">
@@ -43,12 +65,12 @@ messageStore.fetchMessages(props.room.slug);
 
             <!-- Page Content -->
             <!-- {{ messageStore.allMessages }} -->
-            <Messages :room="room"/>
-            
+            <Messages :room="room" />
+
             <!-- END Page Content -->
 
             <!-- Page Footer -->
-            <Footer v-on:message="storeMessage({content: $event})"/>   
+            <Footer v-on:message="storeMessage({ content: $event })" />
             <!-- END Page Footer -->
         </div>
         <!-- END Page Container -->
