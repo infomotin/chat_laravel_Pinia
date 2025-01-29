@@ -1,4 +1,5 @@
 <script setup>
+import { set } from '@vueuse/core';
 import { ref } from 'vue';
 const message = ref('');
 const shift = ref(false);
@@ -12,12 +13,18 @@ const handelEnter = (e) => {
     if(message.value.length > 0) {  
         emit('message', message.value);
         message.value = '';
+        handelFinishTyping();
     }
 }
-
+let typingTimeOut = null;
 const handelTyping = () => {
-    // console.log('Typing');
+    clearTimeout(typingTimeOut);
     emit('typing',true);
+    typingTimeOut = setTimeout(handelFinishTyping, 2000);
+}
+const handelFinishTyping = () => {
+    clearTimeout(typingTimeOut);
+    emit('typing',false);
 }
 </script>
 

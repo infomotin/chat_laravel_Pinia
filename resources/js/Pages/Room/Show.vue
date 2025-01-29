@@ -5,12 +5,19 @@ import Header from '@/Components/Chat/Header.vue';
 import Nev from '@/Components/Chat/Nev.vue';
 import { useMessagesStore } from '@/Store/useMessagesStore';
 import { useUsersStore } from '@/Store/useUsersStore';
+import { onUnmounted } from 'vue';
 
 
 const props = defineProps({
     room: Object,
     required: true
 });
+
+onUnmounted(() => {
+    window.Echo.leave(`room.${props.room.id}`);
+})
+
+
 const messageStore = useMessagesStore();
 const userStore = useUsersStore();
 const storeMessage = (payload) => {
@@ -20,15 +27,15 @@ const storeMessage = (payload) => {
 
 const channel = window.Echo.join(`room.${props.room.id}`)
     .here((users) => {
-        console.log(users);
+       
     }).joining((user) => {
-        console.log(user);
+       
     }).leaving((user) => {
-        console.log(user);
+        
     }).listenForWhisper('typing', (e) => {
-        console.log(e);
+       
     }).error((error) => {
-        console.error(error);
+        
     });
 channel.listen('MessageCreated', (e) => {
     messageStore.pushMessage(e);
@@ -40,7 +47,7 @@ channel.listen('MessageCreated', (e) => {
 }).leaving((user) => {
     userStore.removeUser(user.id);
 }).listenForWhisper('typing', (e) => {
-    console.log(e);
+    userStore.setTyping(e);
 }).error((error) => {
     console.error(error);
 });
@@ -71,7 +78,10 @@ messageStore.fetchMessages(props.room.slug);
 
             <!-- Page Footer -->
             <Footer v-on:message="storeMessage({ content: $event })"
-                v-on:typing="console.log($event)"
+                v-on:typing="channel.whisper('typing', {
+                    'user_id': $page.props.auth.user.id,
+                    'typing': $event,
+                })"
                  />
             <!-- END Page Footer -->
         </div>

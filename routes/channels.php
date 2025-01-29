@@ -5,5 +5,5 @@ use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('room.{roomId}', function (User $user, $roomId) {
     // return true;
-    return $user->only(['id', 'name', 'email', 'avatar']);
+    return $user->only('id', 'name', 'email', 'avatar') +['typing => false'];
 });

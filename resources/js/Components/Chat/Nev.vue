@@ -1,7 +1,7 @@
 <script setup>
 import { useUsersStore } from '@/Store/useUsersStore';
 const userStore = useUsersStore();
-
+import { Link } from '@inertiajs/vue3';
 
 </script>
 
@@ -64,6 +64,24 @@ const userStore = useUsersStore();
                             <p class="text-xs font-medium text-slate-400">
                                 2:30 PM
                             </p>
+                            <svg 
+                            class="mt-3 size-6 animate-bounce opacity-0 transition-opacity duration-500 ease-out"
+                            :class="{ 'opacity-100': user.typing }"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none" 
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M6.75 12a5.25 5.25 0 1111.25 0 5.25 5.25 0 01-11.25 0z
+                                    M12 5.25v1.5M12 17.25v1.5M18.75 6.75l-1.06 1.06M5.31
+                                    19.19l-1.06 1.06"
+                                    
+                            />
+                            </svg>
                         </div>
                     </a>
                  
@@ -72,21 +90,26 @@ const userStore = useUsersStore();
 
                 <!-- Sub Navigation -->
                 <div class="flex-none space-y-2 px-4 pb-2">
-                    <a href="javascript:void(0)"
+                    
+                    <Link 
+                    :href="route('dashboard')"
                         class="flex items-center gap-3 rounded border-l-4 border-transparent px-3 py-4 hover:border-indigo-300 hover:bg-white/50 active:border-indigo-500 active:bg-white active:shadow-sm">
                         <div class="relative flex-none">
-                            <img src="https://images.unsplash.com/photo-1528892952291-009c663ce843?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=160&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY2ODc1OTQ0OQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=160"
+                            <img src="user.avatar"
                                 alt="User Avatar" class="h-11 w-11 rounded-full border-2 border-white/50" />
                         </div>
                         <div class="grow">
                             <p class="mb-0.5 line-clamp-1 text-sm font-bold">
                                 My Account
                             </p>
+                            <p class="mb-0.5 line-clamp-1 text-sm font-bold">
+                                {{ $page.props.auth.user.email }}
+                            </p>
                             <p class="line-clamp-1 text-xs font-medium text-slate-500">
-                                @john.doe
+                                {{ $page.props.auth.user.name }}
                             </p>
                         </div>
-                    </a>
+                    </Link>
                 </div>
                 <!-- END Sub Navigation -->
             </nav>

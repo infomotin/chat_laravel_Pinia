@@ -22,6 +22,9 @@ export const useUsersStore = defineStore('users', {
     updateUser(id, user) {
       this.users = this.users.map(u => u.id === id ? { ...u, ...user } : u);
     },
+    setTyping(event) {
+      this.users.find(user => user.id === event.user_id).typing = event.typing;
+    },
     
   },
 
